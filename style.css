@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'PT Sans', sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: 340 100% 97%;
+    --foreground: 340 30% 25%;
+    --card: 340 80% 96%;
+    --card-foreground: 340 30% 25%;
+    --popover: 340 80% 96%;
+    --popover-foreground: 340 26% 16%;
+    --primary: 340 90% 65%;
+    --primary-foreground: 0 0% 10%;
+    --secondary: 340 82% 92%;
+    --secondary-foreground: 340 26% 16%;
+    --muted: 340 82% 94%;
+    --muted-foreground: 340 26% 40%;
+    --accent: 340 70% 90%;
+    --accent-foreground: 340 26% 16%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 340 67% 90%;
+    --input: 340 67% 95%;
+    --ring: 340 90% 65%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 256 26% 10%;
+    --foreground: 240 50% 96%;
+    --card: 256 26% 14%;
+    --card-foreground: 240 50% 96%;
+    --popover: 256 26% 10%;
+    --popover-foreground: 240 50% 96%;
+    --primary: 254 80% 70%;
+    --primary-foreground: 256 26% 10%;
+    --secondary: 256 26% 20%;
+    --secondary-foreground: 240 50% 96%;
+    --muted: 256 26% 20%;
+    --muted-foreground: 240 50% 80%;
+    --accent: 256 26% 20%;
+    --accent-foreground: 240 50% 96%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 256 26% 20%;
+    --input: 256 26% 20%;
+    --ring: 254 80% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-card/40 backdrop-blur-xl border border-white/10 shadow-xl transition-all duration-300;
+    background-image: radial-gradient(at 100% 0%, hsla(var(--primary) / 0.2) 0px, transparent 50%),
+                      radial-gradient(at 0% 100%, hsla(var(--secondary) / 0.2) 0px, transparent 50%);
+  }
+  .glowing-btn {
+    @apply bg-primary/20 backdrop-blur-md border border-primary/30 text-primary-foreground shadow-[0_0_15px_hsl(var(--primary)/0.5),_0_0_20px_hsl(var(--primary)/0.3)] transition-all duration-300 hover:bg-primary/40 hover:shadow-[0_0_25px_hsl(var(--primary)/0.7),_0_0_35px_hsl(var(--primary)/0.5)];
+  }
+  .card-container {
+    perspective: 1000px;
+  }
+  .card-flipper {
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+  .card-container.flipped .card-flipper {
+    transform: rotateY(180deg);
+  }
+  .card-face,
+  .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .card-back {
+    transform: rotateY(180deg);
+  }
+  .wheel {
+    transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  /* Hide everything by default when printing */
+  body.is-printing > * {
+    visibility: hidden;
+  }
+
+  /* Make the target card and its contents visible */
+  body.is-printing .is-target-for-printing,
+  body.is-printing .is-target-for-printing * {
+    visibility: visible;
+  }
+
+  /* Position the target at the top of the page for printing */
+  body.is-printing .is-target-for-printing {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    page-break-inside: avoid;
+  }
+
+  /* Flip the card to show the back */
+  body.is-printing .is-target-for-printing .card-flipper {
+    transform: rotateY(180deg) !important;
+  }
+  body.is-printing .is-target-for-printing .card-face.front-face {
+    display: none !important;
+  }
+
+  /* Style the card back for a clean print */
+  body.is-printing .is-target-for-printing .card-back {
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
+    backdrop-filter: none !important;
+    display: flex !important;
+  }
+
+  /* Ensure text colors are readable on white paper */
+  .text-green-600, .text-green-300 { color: #166534 !important; }
+  .text-red-600, .text-red-300 { color: #991b1b !important; }
+  .text-muted-foreground { color: #6b7280 !important; }
+  .bg-black\/20 { background-color: #f3f4f6 !important; }
+}
